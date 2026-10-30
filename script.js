@@ -10,10 +10,7 @@
  *   controls — what happens when the player uses the pointer
  *   setup    — starts everything
  *
- * The pointer events change the state. update() and use() each run every
- * 100ms, in a loop:
- *   1. update: change the state, e.g. based on time or on the pointer's movement
- *   2. use:    make sound and move shapes, based on the state
+ 
  *
  * Shapes come from shape.js: createShape() makes one, and its methods
  * (setPosition, setSize, setColour ...) change it.
@@ -25,13 +22,11 @@ import { createShape } from "./shape.js";
 
 // ---------- Settings ----------
 // Settings variables should contain all of the "fixed" parts of your programs
-// For example: which notes you can play, how fast things move, the tempo.
 const notes = ["C6", "A5", "F5", "D5", "C5"];// notes for each tube to play
 const tubeCount= 5;// how many tubes to create
 
 // ---------- State ----------
 // State variables are the parts of your program that change over time.
-// For example: where the pointer is, how fast it's moving, or whether a drone is on.
 let tubes= []; // to store the tubes
 let speeds=[];// store the speed s history
 let averageSpeed=0;
@@ -39,7 +34,6 @@ let averageSpeed=0;
 let lastX= 0 ;
 let lastY= 0 ;
 let lastTime= 0 ;
-
 // for hover , click-based pitch bending  and volume control
 let hoveredIndex= -1 ; // Tracks which chime circle is currently being hovered (-1 if none since index start o)
 let currentDetune = 0; // Stores the current pitch adjustment in cents (-1200 to 1200)
@@ -49,8 +43,6 @@ let isDragging= false; // use to check the click and drag the mouse
 let clapperX= 0;
 let clapperY= 0 ;
 
-
-
 // ---------- Sound ----------
 // Make the instruments and plug them into the speakers.
 const synth = new Tone.PolySynth(Tone.Synth).toDestination(); // can play several notes at once
@@ -58,7 +50,6 @@ const synth = new Tone.PolySynth(Tone.Synth).toDestination(); // can play severa
 // ---------- Update ----------
 // Update the state. This is called every 100ms.
 function update(){
-
    if (speeds.length>0){
     // .reduce() goes through the array and adds all the values together,starting from 0, to calculate the total
     // we calculate the average of all stored speeds in the array
@@ -71,46 +62,43 @@ function update(){
 }
 
 // ---------- Use ----------
+function use(){
+  animateTubes();
+}
+
 function animateTubes(){
-  let time = performance.now()* 0.003; //// Scale down the elapsed time value to control the animation speed
-//currenttube is a parameter that represents the current item while .forEach() goes through the array.
-     tubes.forEach((currentTube,i)=> {
+  let time = performance.now()* 0.003; // Gets the current time and multiplies it by 0.003 to control the animation speed.
+// Goes through every tube in the tubes array.
+// currentTube is the tube being checked(callback parameter), and i is its position in the array.
+  tubes.forEach((currentTube,i)=> {
       //// Skip this tube if it or its element is missing
            if(!currentTube|| !currentTube.element){return;}
            // Check if this is the tube being hovered over.
            if( i===hoveredIndex){
-            //averageSpeed * 10 makes the movement larger when the pointer moves faster.
-            //Math.min(20, ...) limits the movement to 20 pixels.
-            //Math.sin(time * 8) makes the tube sway smoothly in both directions.
-            //If averageSpeed is 0, the tube won't sway.
+            // Multiplies the average pointer speed by 10 to control the movement size.
+            // Math.min() makes sure the movement never goes above 20 pixels
               let movement = Math.min(20, averageSpeed * 10);
+              // Math.sin() creates a smooth back-and-forth movement.
+              // Multiplying time by 8 controls how quickly the tube sways.
               let offsetX = Math.sin(time * 8) * movement;
-              // Move the hovered tube horizontally.
+              // Move the hovered tube horizontally using the calculated offset.
            currentTube.element.style.transform = `translateX(${offsetX}px)`;
-              // Access the current tube's HTML element and change its CSS transform property.
               // The translateX() function moves the tube horizontally, while the offsetX
               // variable determines the direction and distance in pixels.
               // A negative offsetX moves the tube left, and a positive offsetX moves it right.
-              // The backticks and ${offsetX} insert the calculated offset value into the CSS instruction.
            }else{
-               // If this tube is not being hovered over, return it to its normal position.
+              // Moves all non-hovered tubes back to their normal position.
             currentTube.element.style.transform = "translateX(0px)";
            }
-
-
      })
      // Run the animation function again on the next browser frame.
      requestAnimationFrame(animateTubes);
 }
 
-
 // ---------- Controls (Event Handlers) ----------
-
-
 function startSound(event) {
   Tone.start();
 }
-
 // called to reset and simplify the code
 function resetSound(){
   // reset the pitch , volume and apply it to synthesizer
@@ -119,34 +107,26 @@ function resetSound(){
       synth.set({detune :0 , volume:0 });
 }
  function forgetOldestSpeed(){
-  // check that we have at least 1 speed in the array  if there is it removes the oldest speed otherwise null is returned and nothing is removed
+  // remove the first element of the speeds array if it has any elements, otherwise return null
   speeds.length>0?speeds.shift():null;
  }
  function savePointerPosition(event){
-   // Save the current pointer position
     lastX = event.clientX;
     lastY = event.clientY;
-
  }
 
 // play a notes when the pointer enters a tube
 // event : information about the pointer event
 // index: tells us which tube the pointer entered , we do this to use same function for different tubes through the index changing
 function pointerEnterTube(event,index){
-
 // to save which tube we entered
       hoveredIndex= index;
 
 // reset the sound adjustements  to the start when entering a tube
      resetSound();
-
- // play a notes
-      synth.triggerAttack(notes[index]);
-
+    synth.triggerAttack(notes[index]);
  //  change the color
       tubes[index].setColour(180,50,70);
-
-
 }
 
 // when leaving the tube
@@ -171,6 +151,7 @@ function pointerDown(event) {
   // we store the pointer s starting position for the clapper
   clapperX = event.clientX;
   clapperY= event.clientY;
+
  // Store the starting position and time for speed calculations
  savePointerPosition(event);
   lastTime= performance.now();//stores the time of the previous measurement in miliseconds using performance .now , so we can calculate the time between movements.
@@ -180,7 +161,6 @@ function pointerDown(event) {
   // we stopped the dragging so we set it to false
   isDragging= false;
   resetSound();
-
  }
 
  function pointerMove(event){
@@ -200,30 +180,19 @@ function pointerDown(event) {
   // check the elapsed time  is invalid number we stop
   if( seconds <= 0 || !Number.isFinite(seconds)){ return;}
 
-  // we calculate now the horizontal movement and normalizes the movement relative to the screen size.(/window.innerwidth)
+  // we calculate now the horizontal and vertical movement and normalizes the movement relative to the screen size
    let dx = (event.clientX-lastX)/window.innerWidth;
+   let dy = (event.clientY-lastY)/window.innerHeight;
 
-   // the vertical movement and normalization of the movement relative to the screen size.
-    let dy = (event.clientY-lastY)/window.innerHeight;
-
-    // total distance moved
+    // total distance moved and speed 
     let distance = Math.hypot(dx,dy);//calculates the straight-line distance moved by the pointer using its horizontal and vertical movement
-
-    // calculate the speed of the pointer
     let speed = distance / seconds ;
 
-    // let s save the  current positions and time for the next mesurement and store the speed
-   //savePointerPosition(event)
-   //lastTime = now;
-    // speeds.push(speed);
-
-     // remove the oldspeed after 500ms by schedules forgetOldest() to run after half a second
-     //setTimeout(forgetOldestSpeed,500);
-
-     // onlychange the sound when hovering on a tube
+ // onlychange the sound when hovering on a tube
      if(hoveredIndex !== -1){
       const deltaX = event.clientX - lastX;
       const deltaY = event.clientY - lastY;
+
        // Horizontal movement controls pitch.
       if (deltaX !== 0) {
       const pitchSensitivity = 15;
@@ -241,6 +210,7 @@ function pointerDown(event) {
         // Vertical movement controls volume.
     if (deltaY !== 0) {
       const volSensitivity = 1.5;
+     // we make deltaY always absolute, speed never below 0.5 to avoid too small changes, and multiply by volSensitivity to control how much the volume changes.
       const volChange = Math.abs(deltaY) * Math.max(0.5, speed) * volSensitivity;
 
       if (deltaY < 0) {
@@ -252,28 +222,24 @@ function pointerDown(event) {
        // let limit the volume same way [-30db,6db]
           currentVolume=Math.max(-30,Math.min(6,currentVolume));
     }
-          // lets apply the detune(pitch) and volume values to the synthesizer.
+       // lets apply the detune(pitch) and volume values to the synthesizer.
           synth.set({detune:currentDetune,volume: currentVolume});
   }
      // Save the current position and time for the next movement.
         savePointerPosition(event);
          lastTime = now;
-
     // Store the speed and remove the old value after 500ms.
        speeds.push(speed);
        setTimeout(forgetOldestSpeed, 500);
 
  }
 
-
 // ---------- Setup ----------
 // Setup is run once, at the start of the program. It sets everything up for us!
 function setup() {
   update(); // start the update loop
-  animateTubes();
-
-
-    // Create the five tubes.
+ use();
+ // Create the five tubes.
     for (let i = 0; i < tubeCount; i++) {
 
         // Create a tube with a unique ID.
@@ -294,25 +260,18 @@ function setup() {
         tube.element.addEventListener("pointerenter", function(event) {
             pointerEnterTube(event, i);
         });
-
         // Stop the note when the pointer leaves the tube.
         tube.element.addEventListener("pointerleave", function(event) {
             pointerLeaveTube(event, i);
         });
-
         // Store the tube in the tubes array.
         tubes.push(tube);
     }
-
-
   // Put your event listener code here
      // Listen for pointer events across the window.
     window.addEventListener("pointerdown", startSound);
     window.addEventListener("pointerdown", pointerDown);
     window.addEventListener("pointerup", pointerUp);
     window.addEventListener("pointermove", pointerMove);
-
-
 }
-
 setup(); // Always remember to call setup()!
