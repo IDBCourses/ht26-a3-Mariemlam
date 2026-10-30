@@ -1,21 +1,37 @@
 # My instrument
 
-**Play it here:** <!-- Paste your GitHub Pages link here, e.g. https://idbcourses.github.io/your-repo-name/ -->
+**Play it here:** https://idbcourses.github.io/ht26-a3-Mariemlam/
 
-**Name:** <!-- Your name and MAU ID -->
+**Name:** MARIEM LAMOUNI   , MAU ID : as5354
 
-<!-- One or two sentences: what kind of instrument is it, and what is it like to play? -->
+My instrument is called Metallic Wind Tube. It is a digital musical instrument made of five interactive tubes. When you move the pointer over a tube, it plays a musical note. While dragging, horizontal movement changes the pitch and vertical movement changes the volume. The tubes also sway from side to side depending on the pointer's movement speed.
 
 ## How to play
 
 <!-- Fill in the table with a row for everything the player can do with the pointer: clicking, moving slowly or fast, moving in circles, holding still... Say what happens to the sound and to the shapes. If you added keys, give them rows too. -->
 
-| When you...  | The sound...                         | The shapes... |
-| ------------ | ------------------------------------ | ------------- |
-| Click or tap | Plays a C4 (the example: replace it) | Nothing yet   |
-|              |                                      |               |
+| When you...                                      | The sound...                                       |    The shapes...                                                               |
+| ------------                                     | ------------------------------------               |     -------------                                                              |
+|Hover over a tube                                 | Starts playing that tube's note.                   |    The tube changes colour.                                                    |
+| Move the pointer away from a tube                |  Stops playing that tube's note.                   |    The tube returns to its normal colour.                                      |
+|  Hold and drag to the right over a tube          |  Raises the pitch.                                 |    The hovered tube sways from side to side                                    |
+| Hold and drag to the left over a tube            |  Lowers the pitch.                                 |    The hovered tube sways from side to side.                                   |
+| Hold and drag upwards over a tube                |  Increases the volume.                             |    The hovered tube sways from side to side.                                   |
+| Hold and drag downwards over a tube              |  Decreases the volume.                             |    The hovered tube sways from side to side.                                   |
+|Move the pointer faster while dragging            |  Makes pitch and volume adjustments more sensitive.|    The tube sways more strongly, up to a maximum movement.                     |
+| Hold the pointer still while dragging            |  Does not continuously change the pitch or volume. |    The tube gradually stops swaying as the average movement speed decreases.   |
+| Release the pointer                              |  Resets the pitch and volume adjustments.          |    The tube returns to its normal position when it is no longer hovered.       |
+
 
 <!-- Anything else a player needs to know: how to get started, a good thing to try first. -->
+Tips :
+
+ -Move your pointer over a tube to start playing its note.
+ -Hold down the pointer and drag horizontally to experiment with pitch.
+ -Drag upwards to increase the volume and downwards to decrease it.
+ -Try moving slowly and then quickly to hear and see the difference.
+ -Move between different tubes to play different notes.
+
 
 ---
 
