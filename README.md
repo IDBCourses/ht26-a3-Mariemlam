@@ -27,9 +27,13 @@ My instrument is called Metallic Wind Tube. It is a digital musical instrument m
 Tips :
 
  -Move your pointer over a tube to start playing its note.
+
  -Hold down the pointer and drag horizontally to experiment with pitch.
+
  -Drag upwards to increase the volume and downwards to decrease it.
+
  -Try moving slowly and then quickly to hear and see the difference.
+ 
  -Move between different tubes to play different notes.
 
 
