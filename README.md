@@ -4,7 +4,7 @@
 
 **Name:** MARIEM LAMOUNI   , MAU ID : as5354
 
-My instrument is called Metallic Wind Tube. It is a digital musical instrument made of five interactive tubes. When you move the pointer over a tube, it plays a musical note. While dragging, horizontal movement changes the pitch and vertical movement changes the volume. The tubes also sway from side to side depending on the pointer's movement speed.
+My instrument, Metallic Wind Tube, consists of five interactive tubes that play different notes when hovered over. While dragging, horizontal movement controls pitch and vertical movement controls volume; faster pointer movement makes pitch and volume changes stronger, while slower movement makes them weaker. The tubes also sway according to the pointer's average movement speed.
 
 ## How to play
 
